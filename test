@@ -60,3 +60,7 @@ public class Basket implements Transaction{
    } 
 }
 
+public static void main(String[] args){
+System.out.println("Test is gelukt");
+}
+
