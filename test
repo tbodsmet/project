@@ -1,1 +1,62 @@
 
+import java.util.ArrayList;
+
+public class Basket implements Transaction{
+    private String clientID;
+    private String basketID;
+    private ArrayList <BasketItem> basketItems;
+
+    public Basket(String basketID, String clientID) {
+        this.clientID = clientID;
+        this.basketID = basketID;
+        basketItems = new ArrayList<>();
+    }
+
+    public String getClientID() {
+        return clientID;
+    }
+
+    public String getBasketID() {
+        return basketID;
+    }
+
+    @Override
+    public ArrayList<Item> getItems() {
+        ArrayList<Item> lijst = new ArrayList<>();
+        for(int i = 0; i < basketItems.size(); i++){
+          lijst.add(basketItems.get(i));
+        }
+        return lijst;
+    }
+
+    @Override
+    public boolean containsItem(Item item) {
+        return basketItems.contains(item);
+    }
+
+    @Override
+    public boolean containsItemSet(Item[] itemSet) {
+        if (itemSet == null)
+            return false;
+        if (itemSet.length == 0)
+            return false;
+        for (Item item: itemSet){
+            if(!basketItems.contains(item)){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+   public static Basket parseBasketLine(String line){
+       String[] split = line.split(";");
+       Basket mandje = new Basket(split[0],split[1]);
+       
+       for (int i = 2; i < split.length ; i+=2) {
+           BasketItem product = new BasketItem(split[i],Integer.parseInt(split[i+1]));
+           mandje.basketItems.add(product);
+       }
+       return mandje;
+   } 
+}
+
